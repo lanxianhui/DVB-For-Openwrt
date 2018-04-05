@@ -1,14 +1,14 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=oscam
-PKG_REV:=r11401
+PKG_REV:=11402
 PKG_VERSION:=1.20-$(PKG_REV)
 PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_VERSION:=349e06116918c8d1cdbac62695c0eff080424081
+PKG_SOURCE_VERSION:=175e3c61ebf8df3611f980f88ff8b153c4f456d7
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE_URL:=https://github.com/nx111/oscam.git
+PKG_SOURCE_URL:=http://repo.or.cz/oscam.git
 PKG_SOURCE:=$(PKG_SOURCE_SUBDIR).tar.bz2
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
@@ -36,7 +36,11 @@ define Package/oscam/description
 endef
 
 define Package/oscam/conffiles
-/etc/oscam/
+/etc/oscam/oscam.conf
+/etc/oscam/oscam.server
+/etc/oscam/oscam.user
+/etc/oscam/SoftCam.Key
+/etc/oscam/oscam.dvbapi
 endef
 
 CONFIGURE_CMD = ./config.sh
@@ -49,8 +53,7 @@ MAKE_FLAGS += \
         USE_SSL=1 \
 	USE_LIBUSB=1 \
 	USE_PCSC=1 \
-	USE_LIBCRYPTO=1 \
-	LEDSUPPORT=1
+	USE_LIBCRYPTO=1 
 
 
 define Package/oscam/install
@@ -60,8 +63,14 @@ define Package/oscam/install
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/oscam.init $(1)/etc/init.d/oscam
 
-	$(INSTALL_DIR) $(1)/etc/config
-	$(INSTALL_CONF) ./files/oscam.conf $(1)/etc/config/oscam
+	$(INSTALL_DIR) $(1)/etc/oscam
+	$(INSTALL_CONF) ./files/oscam.conf $(1)/etc/oscam
+	$(INSTALL_CONF) ./files/oscam.server $(1)/etc/oscam
+	$(INSTALL_CONF) ./files/oscam.user $(1)/etc/oscam
+	$(INSTALL_CONF) ./files/SoftCam.Key $(1)/etc/oscam
+	$(INSTALL_CONF) ./files/oscam.dvbapi $(1)/etc/oscam
+
+
 endef
 
 
