@@ -1,0 +1,2 @@
+将DVB.mk放到源码的package/kernel/linux/modules下，然后删除源码目录tmp下的info文件夹。接着运行make menuconfig，就会在kernel modules下看到DVB Support和Media tuners。选择你想要的就行了。如果想要增加新的，自己编辑这个文件就行，照格式复制，修改。
+
