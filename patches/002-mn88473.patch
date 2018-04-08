@@ -1,0 +1,33 @@
+diff -ruNp linux-4.9.73.orig/drivers/media/dvb-frontends/mn88473.c linux-4.9.73/drivers/media/dvb-frontends/mn88473.c
+--- linux-4.9.73.orig/drivers/media/dvb-frontends/mn88473.c	2017-11-18 13:22:25.000000000 +0300
++++ linux-4.9.73/drivers/media/dvb-frontends/mn88473.c	2017-12-31 20:09:37.294561113 +0300
+@@ -223,6 +223,19 @@ static int mn88473_set_frontend(struct d
+ 	if (ret)
+ 		goto err;
+ 
++	/* PLP ID write in 0x32 and 0x36 registers(MPLP) */
++	if (c->delivery_system == SYS_DVBT2) {
++		ret = regmap_write(dev->regmap[2], 0x32,
++			(c->stream_id == NO_STREAM_ID_FILTER) ? 0x80 : 0);
++		if (ret)
++			goto err;
++
++		ret = regmap_write(dev->regmap[2], 0x36,
++			(c->stream_id == NO_STREAM_ID_FILTER) ? 0 : c->stream_id);
++		if (ret)
++			goto err;
++	}
++
+ 	/* Reset FSM */
+ 	ret = regmap_write(dev->regmap[2], 0xf8, 0x9f);
+ 	if (ret)
+@@ -429,7 +442,8 @@ static const struct dvb_frontend_ops mn8
+ 			FE_CAN_GUARD_INTERVAL_AUTO     |
+ 			FE_CAN_HIERARCHY_AUTO          |
+ 			FE_CAN_MUTE_TS                 |
+-			FE_CAN_2G_MODULATION
++			FE_CAN_2G_MODULATION           |
++			FE_CAN_MULTISTREAM
+ 	},
+ 
+ 	.get_tune_settings = mn88473_get_tune_settings,
