@@ -8,14 +8,15 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tvheadend
-PKG_VERSION:=4.2.6
-PKG_RELEASE:=1
+PKG_VERSION:=4.3
+PKG_RELEASE:=$(SHORT_GIT_VER)
 
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE_VERSION:=c2a6b61d06ecf8c033f2f5be5746c146eb907d26
+PKG_SOURCE_VERSION:=82fe56ec49081b06e0ebce9af208838b9811ab91
+SHORT_GIT_VER:=$(shell echo $(PKG_SOURCE_VERSION) | cut -b -7)
 # This is stable git version...
 # PKG_SOURCE_VERSION:=1a0262f5870e4fabd6b9c70a7bf2ebe420bc956e
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(SHORT_GIT_VER).tar.gz
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/tvheadend/tvheadend.git
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
@@ -27,7 +28,7 @@ PKG_FIXUP:=autoreconf
 
 PKG_USE_MIPS16:=0
 
-SHORT_GIT_VER:=$(shell echo $(PKG_SOURCE_VERSION) | cut -b -7)
+
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
@@ -36,7 +37,7 @@ define Package/tvheadend
   SECTION:=multimedia
   CATEGORY:=Multimedia
   TITLE:=Tvheadend is a TV streaming server for Linux
-  DEPENDS:=+libopenssl +librt +zlib +libpcre +libdvbcsa +TVHEADEND_AVAHI_SUPPORT:libavahi-client $(ICONV_DEPENDS)
+  DEPENDS:=+libopenssl +librt +zlib +libpcre +libpcre2 +TVHEADEND_AVAHI_SUPPORT:libavahi-client $(ICONV_DEPENDS)
   URL:=https://tvheadend.org
   MAINTAINER:=Jan Čermák <jan.cermak@nic.cz>
 endef
@@ -78,13 +79,6 @@ CONFIGURE_ARGS += \
 	--disable-dbus_1 \
 	--disable-libav \
 	--enable-bundle \
-	--enable-dvben50221 \
-	--enable-tvhcsa \
-	--enable-dvbcsa \
-	--enable-inotify \
-	--enable-epoll \
-	--enable-trace \
-	--nowerror \
         --disable-dvbscan \
         --disable-avahi \
         --disable-hdhomerun_static \
@@ -106,7 +100,6 @@ CONFIGURE_ARGS += \
         --disable-nvenc \
         --disable-libmfx_static \
         --disable-timeshift
-
 
 define Build/Prepare
 	$(call Build/Prepare/Default)
