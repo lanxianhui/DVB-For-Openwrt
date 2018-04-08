@@ -1,9 +1,11 @@
---- a/Makefile	2018-03-22 02:51:32.000000000 +0800
-+++ b/Makefile	2018-03-23 18:31:08.010773484 +0800
-@@ -834,6 +834,7 @@
+--- a/Makefile	2018-04-08 22:57:57.866574873 +0800
++++ b/Makefile	2018-04-08 23:01:10.816378216 +0800
+@@ -827,7 +827,8 @@
+ 	@mkdir -p $(dir $@)
  	$(pCC) $(CFLAGS) -I${ROOTDIR}/src -c -o $@ $<
  
- $(BUILDDIR)/bundle.c: $(DVBSCAN-yes) make_webui
+-$(BUILDDIR)/bundle.c: check_dvb_scan make_webui
++$(BUILDDIR)/bundle.c: $(DVBSCAN-yes) make_webui
 +	find src/webui/static/img/doc/ -delete
  	@mkdir -p $(dir $@)
  	$(pMKBUNDLE) -o $@ -d ${BUILDDIR}/bundle.d $(BUNDLE_FLAGS) $(BUNDLES:%=$(ROOTDIR)/%)
