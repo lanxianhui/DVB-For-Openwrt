@@ -12,7 +12,7 @@ PKG_VERSION:=4.3
 PKG_RELEASE:=$(SHORT_GIT_VER)
 
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE_VERSION:=82fe56ec49081b06e0ebce9af208838b9811ab91
+PKG_SOURCE_VERSION:=518d57bee25cf89ea04ec80e7974f64778b03ed0
 SHORT_GIT_VER:=$(shell echo $(PKG_SOURCE_VERSION) | cut -b -7)
 # This is stable git version...
 # PKG_SOURCE_VERSION:=1a0262f5870e4fabd6b9c70a7bf2ebe420bc956e
@@ -37,7 +37,7 @@ define Package/tvheadend
   SECTION:=multimedia
   CATEGORY:=Multimedia
   TITLE:=Tvheadend is a TV streaming server for Linux
-  DEPENDS:=+libopenssl +librt +zlib +libpcre +libpcre2 +TVHEADEND_AVAHI_SUPPORT:libavahi-client $(ICONV_DEPENDS)
+  DEPENDS:=+libopenssl +librt +zlib +libpcre +libpcre2 +libdvbcsa +TVHEADEND_AVAHI_SUPPORT:libavahi-client $(ICONV_DEPENDS)
   URL:=https://tvheadend.org
   MAINTAINER:=Jan Čermák <jan.cermak@nic.cz>
 endef
@@ -55,6 +55,7 @@ define Package/tvheadend/config
   source "$(SOURCE)/Config.in"
   endmenu
 endef
+
 
 ifeq ($(CONFIG_TVHEADEND_CWC_SUPPORT),)
   CONFIGURE_ARGS += --disable-cwc
@@ -103,7 +104,7 @@ CONFIGURE_ARGS += \
 
 define Build/Prepare
 	$(call Build/Prepare/Default)
-	echo 'Tvheadend $(shell echo $(PKG_VERSION)~$(SHORT_GIT_VER)-$(PKG_RELEASE))' \
+	echo 'Tvheadend $(shell echo $(PKG_VERSION)~$(SHORT_GIT_VER))' \
 	> $(PKG_BUILD_DIR)/debian/changelog
 endef
 
