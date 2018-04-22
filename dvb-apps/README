@@ -1,0 +1,2 @@
+这套软件需要先装hg工具，运行以下命令就行了。
+sudo apt-get install mercurial
