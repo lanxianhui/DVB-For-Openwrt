@@ -105,10 +105,10 @@ endef
 #$(eval $(call DvbBuildApp,zap,zap,dvbcfg dvben50221 dvbsec dvbapi ucsi,,libpthread))
 
 define Build/InstallDev
-	$(INSTALL_DIR) $(1)/opt/include
-	$(CP) $(PKG_INSTALL_DIR)/opt/include/lib* $(1)/opt/include/
-	$(INSTALL_DIR) $(1)/opt/lib
-	$(CP) $(PKG_INSTALL_DIR)/opt/lib/lib*.{a,so*} $(1)/opt/lib/
+	$(INSTALL_DIR) $(1)/include
+	$(CP) $(PKG_INSTALL_DIR)/include/lib* $(1)/include/
+	$(INSTALL_DIR) $(1)/lib
+	$(CP) $(PKG_INSTALL_DIR)/lib/lib*.{a,so*} $(1)/lib/
 endef
 
 # 1: short name
@@ -132,9 +132,9 @@ define DvbBuildLibrary
   endef
 
   define Package/lib$(1)/install
-	$(INSTALL_DIR) $$(1)/opt/lib
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/lib/lib$(1).so* \
-		$$(1)/opt/lib
+	$(INSTALL_DIR) $$(1)/lib
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/lib/lib$(1).so* \
+		$$(1)/lib
   endef
 
   $$(eval $$(call BuildPackage,lib$(1)))
